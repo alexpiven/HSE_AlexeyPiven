@@ -1,39 +1,84 @@
-import time
-from lesson_2_data import respondents
-from lesson_2_data import courts
+"""
+Задание 1
+Выводим 3 переменные, затем просим их имзменить.
+Выводим повторно
+"""
+a = 1
+b = 1.11
+c = 'true'
 
-def gen_court_header(court):
-    # header = "Ответчик: " + respondent['short_name'] + '\n' + 'ИНН: ' + respondent['inn']
+print(a, b, c)
+a=input('Ввведите значение а: ')
+b=input('Ввведите значение b: ')
+c=input('Ввведите значение c: ')
+print (a, b, c)
 
-    header = f"В: {court['court_name']} \n" \
+# Идентификатор
 
-    return header
-print('stop')
+name = input("Введите ваше имя: ")
+print(f"Привет, {name}!")
+print(f"id(name): {id(name)}")
+print(f"id('Привет'): {id('Привет')}")
 
-def gen_respondent_header(respondent):
-    # header = "Ответчик: " + respondent['short_name'] + '\n' + 'ИНН: ' + respondent['inn']
+"""
+Задание 2 
+Запрашиваем время в секундах, 
+проверяем что введено число дале проводим расчет часов и минут, 
+выводим на экран результат
+"""
 
-    header = f"Ответчик: {respondent['short_name']} \n" \
-             f"ИНН  {respondent['inn']} ОГРН {respondent['ogrn']}  \n" \
-             f"Адрес: {respondent['address']} \n"
-    return header
+# Шаг 1: Получаем ввод от пользователя
+user_input = input("Введите время в секундах: ")
 
-def main():
-    print ('start')
-    court_mapping = {i['court_code']: i for i in courts}
-    for i in respondents:
-        try:
-            code = i['case_number'][:3]
-            court = court_mapping[code]
-            court_header = gen_court_header(court=court)
-            print (court_header)
-            respondent_header = gen_respondent_header(respondent=i)
-            print(respondent_header)
-        except Exception:
-            print('error')
-            continue
-    print ('stop')
+# Шаг 2: Проверяем, что введены только числа
+if user_input.isdigit():
+    # Преобразуем строку в целое число
+    total_seconds = int(user_input)
 
-if __name__== "__main__":
-    main()
+    # Шаг 3: Рассчитываем часы, минуты и секунды
+    hours = total_seconds // 3600  # Количество полных часов
+    remaining_seconds = total_seconds % 3600  # Оставшиеся секунды после вычитания часов
+    minutes = remaining_seconds // 60  # Количество полных минут
+    seconds = remaining_seconds % 60  # Оставшиеся секунды
 
+    # Шаг 4: Выводим результат
+    print(f"Часы: {hours}")
+    print(f"Минуты: {minutes}")
+    print(f"Секунды: {seconds}")
+else:
+    # Если ввод некорректный, выводим сообщение об ошибке
+    print("Ошибка: введите только числовое значение!")
+
+
+"""
+Задание 3
+Запрашиваем число
+проверяем что введено число дале проводим расчет
+выводим на экран результат
+"""
+
+
+# Шаг 1: Получаем ввод от пользователя
+user_input = input("Введите число n (от 1 до 9): ")
+
+# Шаг 2: Проверяем корректность ввода
+if user_input.isdigit() and 1 <= int(user_input) <= 9:
+    n = user_input  # Сохраняем число как строку
+
+    # Шаг 3: Формируем числа nn и nnn
+    nn = n + n  # Например, если n = '3', то nn = '33'
+    nnn = n + n + n  # Например, если n = '3', то nnn = '333'
+
+    # Преобразуем строки в числа
+    n = int(n)
+    nn = int(nn)
+    nnn = int(nnn)
+
+    # Шаг 4: Рассчитываем сумму
+    total_sum = n + nn + nnn
+
+    # Шаг 5: Выводим результат
+    print(f"Сумма {n} + {nn} + {nnn} = {total_sum}")
+else:
+    # Если ввод некорректный, выводим сообщение об ошибке
+    print("Ошибка: введите число от 1 до 9!")
