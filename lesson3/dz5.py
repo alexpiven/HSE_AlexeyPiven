@@ -1,9 +1,10 @@
 import json
 import csv
 import re
-txt_traders_path = 'traders.txt'
-json_traders_path = 'traders.json'
-json_efrsb_path = '1000_efrsb_messages.json'
+
+TXT_TRADERS_PATH = 'traders.txt'
+JSON_TRADERS_PATH = 'traders.json'
+JSON_EFRSB_PATH = '1000_efrsb_messages.json'
 
 def save_emails_to_json(email_dict, output_file='emails.json'):
     """
@@ -157,13 +158,13 @@ def inn_from_txt(txt_path):
 
 def main():
     # Шаг 1: Формируем список ИНН организаций из traders.txt
-    inn_list = inn_from_txt(txt_traders_path)
+    inn_list = inn_from_txt(TXT_TRADERS_PATH)
     if not inn_list:
         print("Не найдено ИНН для поиска.")
         return
 
     # Шаг 2: Найти организации в traders.json
-    traders_data = find_traders_by_inn(json_traders_path, inn_list)
+    traders_data = find_traders_by_inn(JSON_TRADERS_PATH, inn_list)
     if not traders_data:
         print("Организации по указанным ИНН не найдены.")
         return
@@ -172,7 +173,7 @@ def main():
     save_traders_to_csv(traders_data)
 
     # Шаг 4: Найти e-mail адреса в 1000_efrsb_messages.json
-    email_data = collect_emails_by_inn(json_efrsb_path)
+    email_data = collect_emails_by_inn(JSON_EFRSB_PATH)
     if not email_data:
         print("Email-адреса не найдены.")
         return
