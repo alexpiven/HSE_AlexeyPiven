@@ -1,8 +1,8 @@
 import json
 import csv
 import re
-txt_path = 'traders.txt'
-json_path = 'traders.json'
+txt_traders_path = 'traders.txt'
+json_traders_path = 'traders.json'
 json_efrsb_path = '1000_efrsb_messages.json'
 
 def save_emails_to_json(email_dict, output_file='emails.json'):
@@ -18,7 +18,7 @@ def save_emails_to_json(email_dict, output_file='emails.json'):
         serializable = {inn: list(emails) for inn, emails in email_dict.items()}
 
         with open(output_file, 'w', encoding='utf-8', newline='') as f:
-            json.dump(serializable, f, ensure_ascii=False, indent=4)
+            json.dump(serializable, f, ensure_ascii=False, indent=4) # type: ignore
         print(f"Email-адреса успешно сохранены в файл '{output_file}'.")
     except Exception as e:
         print(f"Ошибка при записи в JSON: {e}")
@@ -98,7 +98,7 @@ def save_traders_to_csv(records, output_file='traders.csv'):
 
     try:
         with open(output_file, 'w', newline='', encoding='utf-8') as csvfile:
-            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames) # type: ignore
             writer.writeheader()
             writer.writerows(records)
         print(f"Данные успешно сохранены в файл '{output_file}'.")
@@ -109,7 +109,7 @@ def find_traders_by_inn(json_path, inn_list):
     """
     Находит записи по списку ИНН в JSON-файле.
 
-    :param json_file_path: Путь к JSON-файлу с данными организаций
+    :param json_path: Путь к JSON-файлу с данными организаций
     :param inn_list: Список ИНН для поиска
     :return: Список словарей с полями inn, ogrn, address
     """
@@ -156,27 +156,29 @@ def inn_from_txt(txt_path):
     return inn_list
 
 def main():
-
-    inn_list = inn_from_txt(txt_path)
+    # Шаг 1: Формируем список ИНН организаций из traders.txt
+    inn_list = inn_from_txt(txt_traders_path)
     if not inn_list:
         print("Не найдено ИНН для поиска.")
         return
 
-        # Шаг 2: Найти организации в traders.json
-    traders_data = find_traders_by_inn(json_path, inn_list)
-
+    # Шаг 2: Найти организации в traders.json
+    traders_data = find_traders_by_inn(json_traders_path, inn_list)
     if not traders_data:
         print("Организации по указанным ИНН не найдены.")
         return
 
     # Шаг 3: Сохранить результат в CSV
     save_traders_to_csv(traders_data)
+
+    # Шаг 4: Найти e-mail адреса в 1000_efrsb_messages.json
     email_data = collect_emails_by_inn(json_efrsb_path)
     if not email_data:
         print("Email-адреса не найдены.")
         return
 
-        # Шаг 2: Сохранить результат в JSON
+    # Шаг 5: Сохранить результат в JSON
     save_emails_to_json(email_data)
+
 if __name__ == "__main__":
     main()
