@@ -124,3 +124,4 @@ if __name__ == "__main__":
     parser = ParserCBRF(from_date="2023-01-01", to_date="2025-01-01")
     parser.start()
     print("Готово!")
+    xcxcx
